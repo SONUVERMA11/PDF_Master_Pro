@@ -18,59 +18,133 @@ st.set_page_config(page_title="PDF Studio Pro", layout="wide", page_icon="💠",
 
 st.markdown("""
 <style>
-/* Premium iOS Light Theme */
+/* ----------------------------------------------------
+   ULTRA PREMIUM SAAS UI - DESIGNED BY A SR FRONTEND DEV
+   ---------------------------------------------------- */
+   
+/* Animated Mesh Background */
 .stApp {
-    background-color: #F2F2F7;
-    color: #1C1C1E;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(120deg, #f6f8fb 0%, #f1f5f9 100%);
+    color: #0f172a;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
 }
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.08), transparent 25%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Glassmorphism Sidebar */
 [data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.7) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 1px 0 20px rgba(0,0,0,0.02);
 }
-/* iOS Blue Buttons */
+
+/* Stunning Interactive Buttons */
 div.stButton > button:first-child {
-    background-color: #007AFF;
+    background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
     color: white;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
     border: none;
-    border-radius: 12px;
-    padding: 0.6rem 1.4rem;
-    box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2);
-    transition: all 0.2s ease;
+    border-radius: 14px;
+    padding: 0.8rem 2rem;
+    box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+div.stButton > button:first-child::after {
+    content: '';
+    position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: all 0.6s ease;
+}
+div.stButton > button:first-child:hover::after {
+    left: 100%;
 }
 div.stButton > button:first-child:hover {
-    background-color: #0056b3;
-    transform: scale(0.98);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.5);
 }
-/* Headings */
+
+/* Typography & Gradient Headers */
 h1, h2, h3 {
-    color: #000000;
-    font-weight: 700;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
     letter-spacing: -0.5px;
 }
-/* Cards & Uploaders */
+h1 { font-size: 2.8rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+
+/* Premium File Uploader */
 [data-testid="stFileUploadDropzone"] {
-    background-color: #FFFFFF;
-    border: 2px dashed #C7C7CC;
-    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 [data-testid="stFileUploadDropzone"]:hover {
-    border-color: #007AFF;
+    border-color: #4f46e5;
+    background-color: rgba(79, 70, 229, 0.02);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
 }
-/* Metrics/Info panels */
+
+/* Beautiful Inputs & Selectors */
+.stTextInput>div>div>input, .stSelectbox>div>div>div, .stNumberInput>div>div>input {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 14px 18px;
+    font-size: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+    transition: all 0.3s ease;
+}
+.stTextInput>div>div>input:focus, .stSelectbox>div>div>div:focus, .stNumberInput>div>div>input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+    background-color: #ffffff;
+}
+
+/* Metrics & Stats */
 [data-testid="stMetricValue"] {
-    color: #007AFF;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #4f46e5, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-/* Custom Inputs */
-.stTextInput>div>div>input, .stSelectbox>div>div>div {
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    border: 1px solid #E5E5EA;
+[data-testid="stMetricDelta"] {
+    font-size: 1.1rem;
+    font-weight: 600;
 }
+
+/* Micro Animations for main content */
+div[data-testid="stVerticalBlock"] > div {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hide clutter */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
