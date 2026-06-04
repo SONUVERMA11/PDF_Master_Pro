@@ -14,131 +14,156 @@ from pptx.util import Inches
 import pdfplumber
 
 # -------------- PAGE CONFIG & CSS ----------------
-st.set_page_config(page_title="PDF Studio Pro", layout="wide", page_icon="💠", initial_sidebar_state="expanded")
+st.set_page_config(page_title="PDF Studio Pro", layout="wide", page_icon="💠", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
 /* ----------------------------------------------------
-   ULTRA PREMIUM SAAS UI - DESIGNED BY A SR FRONTEND DEV
+   HIGH CONTRAST DARK THEME - NEON/CYBERPUNK
    ---------------------------------------------------- */
-   
-/* Animated Mesh Background */
 .stApp {
-    background: linear-gradient(120deg, #f6f8fb 0%, #f1f5f9 100%);
-    color: #0f172a;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
-}
-.stApp::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.08), transparent 25%);
-    pointer-events: none;
-    z-index: -1;
+    background-color: #050505;
+    color: #e0e0e0;
+    font-family: "SF Pro Display", "Inter", sans-serif;
 }
 
-/* Glassmorphism Sidebar */
-[data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.6) !important;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-right: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 1px 0 20px rgba(0,0,0,0.02);
+/* Hide Sidebar since we use Tabs now */
+[data-testid="collapsedControl"] { display: none; }
+section[data-testid="stSidebar"] { display: none; }
+
+/* Tabs Styling (Streamlit native tabs) */
+div[data-testid="stTabs"] {
+    background-color: #050505;
+}
+div[data-testid="stTabs"] button {
+    color: #888888 !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 12px 24px;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+}
+div[data-testid="stTabs"] button[aria-selected="true"] {
+    color: #00f0ff !important;
+    border-bottom: 2px solid #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
 }
 
-/* Stunning Interactive Buttons */
+/* Stunning Neon Buttons */
 div.stButton > button:first-child {
-    background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
-    color: white;
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: 0.5px;
-    border: none;
-    border-radius: 14px;
+    background: #0a0a0a;
+    color: #00f0ff;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: 1px solid #00f0ff;
+    border-radius: 4px;
     padding: 0.8rem 2rem;
-    box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1);
+    transition: all 0.2s ease-in-out;
     width: 100%;
 }
-div.stButton > button:first-child::after {
-    content: '';
-    position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: all 0.6s ease;
-}
-div.stButton > button:first-child:hover::after {
-    left: 100%;
-}
 div.stButton > button:first-child:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.5);
+    background: #00f0ff;
+    color: #000000;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.8), inset 0 0 15px rgba(0, 240, 255, 0.6);
+    transform: scale(1.02);
 }
 
-/* Typography & Gradient Headers */
+/* Headings */
 h1, h2, h3 {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    color: #ffffff;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
-h1 { font-size: 2.8rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+h1 { 
+    font-size: 3rem; 
+    margin-bottom: 0.5rem; 
+    text-shadow: 3px 3px 0px #ff003c;
+}
+h2 {
+    color: #00f0ff;
+    border-bottom: 1px solid #222;
+    padding-bottom: 10px;
+}
 
-/* Premium File Uploader */
+/* File Uploader */
 [data-testid="stFileUploadDropzone"] {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 2px dashed #cbd5e1;
-    border-radius: 20px;
+    background-color: #0a0a0a;
+    border: 2px dashed #333333;
+    border-radius: 8px;
     padding: 40px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 [data-testid="stFileUploadDropzone"]:hover {
-    border-color: #4f46e5;
-    background-color: rgba(79, 70, 229, 0.02);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+    border-color: #ff003c;
+    background-color: rgba(255, 0, 60, 0.05);
+    box-shadow: 0 0 20px rgba(255, 0, 60, 0.2);
 }
 
-/* Beautiful Inputs & Selectors */
+/* Inputs & Selectors */
 .stTextInput>div>div>input, .stSelectbox>div>div>div, .stNumberInput>div>div>input {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    padding: 14px 18px;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #333;
+    padding: 12px 16px;
     font-size: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     transition: all 0.3s ease;
 }
 .stTextInput>div>div>input:focus, .stSelectbox>div>div>div:focus, .stNumberInput>div>div>input:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
-    background-color: #ffffff;
+    border-color: #00f0ff;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    color: #00f0ff;
 }
 
 /* Metrics & Stats */
 [data-testid="stMetricValue"] {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #4f46e5, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #00f0ff;
+    text-shadow: 0 0 10px rgba(0,240,255,0.4);
 }
 [data-testid="stMetricDelta"] {
-    font-size: 1.1rem;
-    font-weight: 600;
+    color: #ff003c !important;
 }
 
-/* Micro Animations for main content */
-div[data-testid="stVerticalBlock"] > div {
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* Container Cards */
+[data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
+    background: #0a0a0a;
+    border-radius: 8px;
+    padding: 30px;
+    border: 1px solid #1c1c1c;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    animation: slideUp 0.4s ease-out forwards;
 }
+
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer */
+.custom-footer {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    text-align: center;
+    padding: 15px;
+    background: rgba(5, 5, 5, 0.9);
+    backdrop-filter: blur(10px);
+    color: #888;
+    border-top: 1px solid #222;
+    font-size: 15px;
+    z-index: 9999;
+    letter-spacing: 1px;
+}
+.custom-footer span {
+    color: #ff003c;
+    font-weight: 900;
+    text-shadow: 0 0 8px rgba(255,0,60,0.6);
 }
 
 /* Hide clutter */
@@ -167,337 +192,318 @@ def display_sizes(orig_path, new_path):
     diff = orig_size - new_size
     cols[2].metric("Space Saved", f"{diff:.2f} MB", delta=f"{-diff:.2f} MB", delta_color="inverse")
 
-# -------------- SIDEBAR NAVIGATION ----------------
-st.sidebar.title("💠 PDF Studio Pro")
-st.sidebar.markdown("The ultimate, all-in-one PDF toolkit.")
+# -------------- MAIN APP LAYOUT ----------------
+st.markdown("<h1>PDF STUDIO PRO <span>// TERMINAL</span></h1>", unsafe_allow_html=True)
+st.markdown("---")
 
-app_mode = st.sidebar.radio("Select Tool", [
-    "🔄 Universal Format Converter",
-    "💧 Watermark & Deep Clean",
-    "✂️ Auto-Crop & Margin Resize",
-    "📚 Merge & Split PDFs",
-    "🗜️ Ultimate PDF Compressor",
-    "🎨 Dark Mode Color Inverter",
-    "🖼️ AI Background Remover",
-    "🔐 Security (Protect/Unlock)"
+tabs = st.tabs([
+    "🔄 Converter",
+    "💧 Deep Clean",
+    "✂️ Crop Engine",
+    "📚 Merge/Split",
+    "🗜️ Compressor",
+    "🎨 Inverter",
+    "🖼️ Rembg AI",
+    "🔐 Security"
 ])
 
-st.sidebar.markdown("---")
-st.sidebar.markdown("💡 **Tip:** All operations are performed entirely locally on your machine.")
-st.sidebar.markdown("<br><br><div style='text-align: center; color: #8E8E93; font-size: 14px; font-weight: 500;'>Made with ❤️ by <b>SONU VERMA</b></div>", unsafe_allow_html=True)
-
-# -------------- MAIN APP AREA ----------------
-st.title(app_mode)
-
-if app_mode == "🔄 Universal Format Converter":
-    st.markdown("Convert between PDF and virtually any other format.")
+# ----------------- 1. CONVERTER -----------------
+with tabs[0]:
+    st.header("🔄 Universal Converter")
+    st.markdown("Convert between PDF and virtually any other format seamlessly.")
     
-    conv_type = st.selectbox("Select Conversion Type:", [
-        "PDF to Word (.docx)",
-        "PDF to PowerPoint (.pptx)",
-        "PDF to Excel/CSV Tables (.xlsx)",
-        "PDF to Raw Text (.txt)",
-        "PDF to HTML (.html)",
-        "PDF to High-Res Images (.zip)",
-        "Images to PDF (.pdf)"
-    ])
-    
-    if conv_type == "Images to PDF (.pdf)":
-        images = st.file_uploader("Upload Images (PNG/JPG)", type=["png", "jpg", "jpeg"], accept_multiple_files=True)
-        if images and st.button("Create PDF"):
-            with st.spinner("Converting images into a single PDF..."):
-                try:
-                    out_pdf = fitz.open()
-                    for img_file in images:
-                        img_bytes = img_file.getvalue()
-                        # Use fitz open appropriately based on extension
-                        img_doc = fitz.open("jpeg", img_bytes) if img_file.name.lower().endswith(('jpg','jpeg')) else fitz.open("png", img_bytes)
-                        pdf_bytes = img_doc.convert_to_pdf()
-                        out_pdf.insert_pdf(fitz.open("pdf", pdf_bytes))
-                    
-                    out_path = "converted_images.pdf"
-                    out_pdf.save(out_path, deflate=True)
-                    out_pdf.close()
-                    with open(out_path, "rb") as f:
-                        st.download_button("Download PDF", f, file_name="images.pdf")
-                except Exception as e:
-                    st.error(f"Error: {e}")
-    else:
-        conv_file = st.file_uploader("Upload PDF to convert", type=["pdf"])
-        if conv_file and st.button("Start Conversion"):
-            with st.spinner(f"Running conversion algorithms..."):
-                path = save_uploaded_file(conv_file)
-                base_name = os.path.splitext(conv_file.name)[0]
-                
-                try:
-                    if "Word" in conv_type:
-                        out = path.replace(".pdf", ".docx")
-                        cv = Converter(path)
-                        cv.convert(out, start=0, end=None)
-                        cv.close()
-                        with open(out, "rb") as f:
-                            st.download_button("Download Word Doc", f, file_name=f"{base_name}.docx")
-                            
-                    elif "PowerPoint" in conv_type:
-                        out = path.replace(".pdf", ".pptx")
-                        doc = fitz.open(path)
-                        prs = Presentation()
-                        # Standard 16:9 Slide
-                        prs.slide_width = Inches(16)
-                        prs.slide_height = Inches(9)
-                        blank_slide_layout = prs.slide_layouts[6] # 6 is usually a blank layout
-                        
-                        for page in doc:
-                            pix = page.get_pixmap(dpi=150)
-                            img_data = pix.tobytes("jpeg")
-                            img_stream = io.BytesIO(img_data)
-                            slide = prs.slides.add_slide(blank_slide_layout)
-                            # Stretch image to fit slide fully
-                            slide.shapes.add_picture(img_stream, 0, 0, width=prs.slide_width, height=prs.slide_height)
-                            
-                        prs.save(out)
-                        with open(out, "rb") as f:
-                            st.download_button("Download PowerPoint", f, file_name=f"{base_name}.pptx")
-                            
-                    elif "Excel" in conv_type:
-                        out = path.replace(".pdf", ".xlsx")
-                        with pdfplumber.open(path) as pdf:
-                            all_tables = []
-                            for i, page in enumerate(pdf.pages):
-                                tables = page.extract_tables()
-                                for table in tables:
-                                    if table and len(table) > 1:
-                                        # Use first row as header if it exists
-                                        header = table[0]
-                                        # Replace None with empty string in header to avoid pandas errors
-                                        header = [str(x) if x is not None else f"Col_{j}" for j, x in enumerate(header)]
-                                        df = pd.DataFrame(table[1:], columns=header)
-                                        all_tables.append(df)
-                                        
-                        if all_tables:
-                            with pd.ExcelWriter(out) as writer:
-                                for i, df in enumerate(all_tables):
-                                    df.to_excel(writer, sheet_name=f"Table_{i+1}", index=False)
-                            with open(out, "rb") as f:
-                                st.download_button("Download Excel", f, file_name=f"{base_name}.xlsx")
-                        else:
-                            st.warning("No structured tables were detected in the PDF!")
-                            
-                    elif "Text" in conv_type:
-                        out = path.replace(".pdf", ".txt")
-                        doc = fitz.open(path)
-                        text = ""
-                        for i, page in enumerate(doc):
-                            text += f"--- Page {i+1} ---\n\n"
-                            text += page.get_text("text") + "\n\n"
-                        with open(out, "w", encoding="utf-8") as f:
-                            f.write(text)
-                        with open(out, "rb") as f:
-                            st.download_button("Download Text File", f, file_name=f"{base_name}.txt")
-                            
-                    elif "HTML" in conv_type:
-                        out = path.replace(".pdf", ".html")
-                        doc = fitz.open(path)
-                        html = "<html><head><meta charset='utf-8'></head><body>\n"
-                        for page in doc:
-                            html += page.get_text("html") + "<hr/>\n"
-                        html += "</body></html>"
-                        with open(out, "w", encoding="utf-8") as f:
-                            f.write(html)
-                        with open(out, "rb") as f:
-                            st.download_button("Download HTML", f, file_name=f"{base_name}.html")
-                            
-                    elif "Images" in conv_type:
-                        out = path.replace(".pdf", ".zip")
-                        doc = fitz.open(path)
-                        with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zipf:
-                            for i, page in enumerate(doc):
-                                pix = page.get_pixmap(dpi=300)
-                                zipf.writestr(f"page_{i+1}.jpg", pix.tobytes("jpeg"))
-                        with open(out, "rb") as f:
-                            st.download_button("Download Images (ZIP)", f, file_name=f"{base_name}_images.zip")
-                            
-                except Exception as e:
-                    st.error(f"Error during conversion: {e}")
-
-elif app_mode == "💧 Watermark & Deep Clean":
-    st.markdown("Advanced multi-layered watermark extraction. Use **Deep Clean** if auto-detect fails.")
-    wm_file = st.file_uploader("Upload PDF", type=["pdf"])
-    
-    mode = st.selectbox("Select Cleaning Engine:", [
-        "1. Remove Annotations & Stamps (Best for invisible/stubborn watermarks)",
-        "2. Auto-Detect Repeating Text",
-        "3. Manual Text Target",
-        "4. Remove All Background Images",
-        "5. Extreme: Remove ALL Text (Keep only graphics)"
-    ])
-    
-    wm_text = ""
-    if mode == "3. Manual Text Target":
-        wm_text = st.text_input("Exact Text to Remove (Case-sensitive):")
+    col1, col2 = st.columns(2)
+    with col1:
+        conv_type = st.selectbox("Select Conversion Matrix:", [
+            "PDF to Word (.docx)",
+            "PDF to PowerPoint (.pptx)",
+            "PDF to Excel/CSV Tables (.xlsx)",
+            "PDF to Raw Text (.txt)",
+            "PDF to HTML (.html)",
+            "PDF to High-Res Images (.zip)",
+            "Images to PDF (.pdf)"
+        ])
         
-    if wm_file and st.button("Clean Document"):
-        with st.spinner("Executing Deep Clean algorithms..."):
-            input_path = save_uploaded_file(wm_file)
-            output_path = input_path.replace(".pdf", "_clean.pdf")
+        if conv_type == "Images to PDF (.pdf)":
+            images = st.file_uploader("Upload Image Pack (PNG/JPG)", type=["png", "jpg", "jpeg"], accept_multiple_files=True)
+            if images and st.button("EXECUTE BUILD"):
+                with st.spinner("Compiling images into PDF architecture..."):
+                    try:
+                        out_pdf = fitz.open()
+                        for img_file in images:
+                            img_bytes = img_file.getvalue()
+                            img_doc = fitz.open("jpeg", img_bytes) if img_file.name.lower().endswith(('jpg','jpeg')) else fitz.open("png", img_bytes)
+                            out_pdf.insert_pdf(fitz.open("pdf", img_doc.convert_to_pdf()))
+                        
+                        out_path = "converted_images.pdf"
+                        out_pdf.save(out_path, deflate=True)
+                        out_pdf.close()
+                        with col2:
+                            st.success("COMPILE COMPLETE")
+                            with open(out_path, "rb") as f:
+                                st.download_button("DOWNLOAD ARTIFACT", f, file_name="images.pdf")
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
+        else:
+            conv_file = st.file_uploader("Upload Source PDF", type=["pdf"])
+            if conv_file and st.button("INITIALIZE CONVERSION"):
+                with col2:
+                    with st.spinner(f"Running conversion algorithms for {conv_type}..."):
+                        path = save_uploaded_file(conv_file)
+                        base_name = os.path.splitext(conv_file.name)[0]
+                        try:
+                            if "Word" in conv_type:
+                                out = path.replace(".pdf", ".docx")
+                                cv = Converter(path)
+                                cv.convert(out, start=0, end=None)
+                                cv.close()
+                                st.success("CONVERSION COMPLETE")
+                                with open(out, "rb") as f:
+                                    st.download_button("DOWNLOAD WORD DOC", f, file_name=f"{base_name}.docx")
+                                    
+                            elif "PowerPoint" in conv_type:
+                                out = path.replace(".pdf", ".pptx")
+                                doc = fitz.open(path)
+                                prs = Presentation()
+                                prs.slide_width, prs.slide_height = Inches(16), Inches(9)
+                                blank = prs.slide_layouts[6] 
+                                
+                                bar = st.progress(0)
+                                for i, page in enumerate(doc):
+                                    img_stream = io.BytesIO(page.get_pixmap(dpi=150).tobytes("jpeg"))
+                                    slide = prs.slides.add_slide(blank)
+                                    slide.shapes.add_picture(img_stream, 0, 0, width=prs.slide_width, height=prs.slide_height)
+                                    bar.progress((i+1)/len(doc))
+                                    
+                                prs.save(out)
+                                st.success("CONVERSION COMPLETE")
+                                with open(out, "rb") as f:
+                                    st.download_button("DOWNLOAD PPTX", f, file_name=f"{base_name}.pptx")
+                                    
+                            elif "Excel" in conv_type:
+                                out = path.replace(".pdf", ".xlsx")
+                                with pdfplumber.open(path) as pdf:
+                                    all_tables = []
+                                    for page in pdf.pages:
+                                        for table in page.extract_tables():
+                                            if table and len(table) > 1:
+                                                header = [str(x) if x is not None else f"Col_{j}" for j, x in enumerate(table[0])]
+                                                all_tables.append(pd.DataFrame(table[1:], columns=header))
+                                                
+                                if all_tables:
+                                    with pd.ExcelWriter(out) as writer:
+                                        for i, df in enumerate(all_tables):
+                                            df.to_excel(writer, sheet_name=f"Data_{i+1}", index=False)
+                                    st.success("DATA EXTRACTION COMPLETE")
+                                    with open(out, "rb") as f:
+                                        st.download_button("DOWNLOAD EXCEL", f, file_name=f"{base_name}.xlsx")
+                                else:
+                                    st.warning("NO TABLES DETECTED IN STREAM")
+                                    
+                            elif "Text" in conv_type:
+                                out = path.replace(".pdf", ".txt")
+                                doc = fitz.open(path)
+                                text = "".join([f"--- Page {i+1} ---\n\n{page.get_text('text')}\n\n" for i, page in enumerate(doc)])
+                                with open(out, "w", encoding="utf-8") as f: f.write(text)
+                                st.success("EXTRACTION COMPLETE")
+                                with open(out, "rb") as f:
+                                    st.download_button("DOWNLOAD RAW TEXT", f, file_name=f"{base_name}.txt")
+                                    
+                            elif "HTML" in conv_type:
+                                out = path.replace(".pdf", ".html")
+                                doc = fitz.open(path)
+                                html = "<html><head><meta charset='utf-8'></head><body style='background:#050505; color:#fff;'>\n"
+                                html += "".join([page.get_text("html") + "<hr/>\n" for page in doc])
+                                html += "</body></html>"
+                                with open(out, "w", encoding="utf-8") as f: f.write(html)
+                                st.success("HTML COMPILE COMPLETE")
+                                with open(out, "rb") as f:
+                                    st.download_button("DOWNLOAD HTML", f, file_name=f"{base_name}.html")
+                                    
+                            elif "Images" in conv_type:
+                                out = path.replace(".pdf", ".zip")
+                                doc = fitz.open(path)
+                                bar = st.progress(0)
+                                with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                                    for i, page in enumerate(doc):
+                                        zipf.writestr(f"page_{i+1}.jpg", page.get_pixmap(dpi=300).tobytes("jpeg"))
+                                        bar.progress((i+1)/len(doc))
+                                st.success("EXTRACTION COMPLETE")
+                                with open(out, "rb") as f:
+                                    st.download_button("DOWNLOAD IMAGE PACK", f, file_name=f"{base_name}_images.zip")
+                        except Exception as e:
+                            st.error(f"SYSTEM FAULT: {e}")
+
+# ----------------- 2. DEEP CLEAN / WATERMARK -----------------
+with tabs[1]:
+    st.header("💧 Deep Clean Engine")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        wm_file = st.file_uploader("Upload PDF Target", type=["pdf"])
+        mode = st.selectbox("Select Purge Protocol:", [
+            "Remove Annotations & Stamps",
+            "Auto-Detect Repeating Text",
+            "Manual Text Target",
+            "Purge All Background Images",
+            "Extreme: Purge ALL Text"
+        ])
+        
+        wm_text = ""
+        if mode == "Manual Text Target":
+            wm_text = st.text_input("Target String (Case-sensitive):")
             
-            try:
-                doc = fitz.open(input_path)
-                count = 0
-                
-                if mode == "1. Remove Annotations & Stamps (Best for invisible/stubborn watermarks)":
-                    for page in doc:
-                        for annot in page.annots():
-                            page.delete_annot(annot)
-                            count += 1
-                            
-                elif mode == "3. Manual Text Target" and wm_text:
-                    for page in doc:
-                        for inst in page.search_for(wm_text):
-                            page.add_redact_annot(inst, fill=(1, 1, 1))
-                            count += 1
-                        page.apply_redactions()
+        if wm_file and st.button("EXECUTE PURGE"):
+            with col2:
+                with st.spinner("Executing Deep Clean algorithms..."):
+                    input_path = save_uploaded_file(wm_file)
+                    output_path = input_path.replace(".pdf", "_clean.pdf")
+                    try:
+                        doc = fitz.open(input_path)
+                        count = 0
                         
-                elif mode == "2. Auto-Detect Repeating Text":
-                    text_counts = defaultdict(int)
-                    num_pages = len(doc)
-                    if num_pages > 1:
-                        for page in doc:
-                            blocks = page.get_text("blocks")
-                            seen_on_page = set()
-                            for b in blocks:
-                                text = b[4].strip()
-                                if len(text) > 3 and text not in seen_on_page:
-                                    text_counts[text] += 1
-                                    seen_on_page.add(text)
-                        
-                        candidates = [t for t, c in text_counts.items() if c >= (num_pages * 0.5)]
-                        for page in doc:
-                            for candidate in candidates:
-                                for inst in page.search_for(candidate):
-                                    page.add_redact_annot(inst, fill=(1, 1, 1))
+                        if mode == "Remove Annotations & Stamps":
+                            for page in doc:
+                                for annot in page.annots():
+                                    page.delete_annot(annot)
                                     count += 1
-                            page.apply_redactions()
-                        if count > 0:
-                            st.success("Auto-removed repeating text watermarks!")
-                        else:
-                            st.warning("No repeating text found. Try removing Annotations instead.")
-                    else:
-                        st.warning("Needs >1 page for auto-detect. Use Manual mode.")
-
-                elif mode == "4. Remove All Background Images":
-                    for page in doc:
-                        for img in page.get_images(full=True):
-                            page.delete_image(img[0])
-                            count += 1
-                            
-                elif mode == "5. Extreme: Remove ALL Text (Keep only graphics)":
-                    for page in doc:
-                        for b in page.get_text("blocks"):
-                            if b[6] == 0:
-                                page.add_redact_annot(fitz.Rect(b[:4]))
-                                count += 1
-                        page.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE)
-                        
-                doc.save(output_path, deflate=True, garbage=4)
-                doc.close()
-                
-                st.success(f"Processing Complete! Removed {count} artifacts.")
-                display_sizes(input_path, output_path)
-                with open(output_path, "rb") as f:
-                    st.download_button("Download Cleaned PDF", f, file_name=wm_file.name.replace(".pdf", "_cleaned.pdf"), mime="application/pdf")
-            except Exception as e:
-                st.error(f"Error: {e}")
-
-elif app_mode == "✂️ Auto-Crop & Margin Resize":
-    st.markdown("Automatically detect and slice away blank white boundaries around your document, or set manual margins.")
-    crop_file = st.file_uploader("Upload PDF", type=["pdf"])
-    
-    crop_mode = st.radio("Cropping Method", ["Auto-Detect Blank Boundaries", "Manual Margins (Points)"])
-    
-    if crop_mode == "Manual Margins (Points)":
-        cols = st.columns(4)
-        c_top = cols[0].number_input("Top Margin", value=50)
-        c_bot = cols[1].number_input("Bottom Margin", value=50)
-        c_left = cols[2].number_input("Left Margin", value=50)
-        c_right = cols[3].number_input("Right Margin", value=50)
+                                    
+                        elif mode == "Manual Text Target" and wm_text:
+                            for page in doc:
+                                for inst in page.search_for(wm_text):
+                                    page.add_redact_annot(inst, fill=None)
+                                    count += 1
+                                page.apply_redactions()
+                                
+                        elif mode == "Auto-Detect Repeating Text":
+                            text_counts = defaultdict(int)
+                            num_pages = len(doc)
+                            if num_pages > 1:
+                                for page in doc:
+                                    seen = set()
+                                    for b in page.get_text("blocks"):
+                                        t = b[4].strip()
+                                        if len(t) > 3 and t not in seen:
+                                            text_counts[t] += 1
+                                            seen.add(t)
+                                candidates = [t for t, c in text_counts.items() if c >= (num_pages * 0.5)]
+                                for page in doc:
+                                    for candidate in candidates:
+                                        for inst in page.search_for(candidate):
+                                            page.add_redact_annot(inst, fill=None)
+                                            count += 1
+                                    page.apply_redactions()
+                            else:
+                                st.warning("REQUIRE >1 PAGE FOR AUTO-DETECT")
         
-    if crop_file and st.button("Crop PDF"):
-        with st.spinner("Analyzing margins and cropping..."):
-            input_path = save_uploaded_file(crop_file)
-            output_path = input_path.replace(".pdf", "_cropped.pdf")
-            
-            try:
-                doc = fitz.open(input_path)
-                
-                if crop_mode == "Auto-Detect Blank Boundaries":
-                    progress = st.progress(0)
-                    for i, page in enumerate(doc):
-                        pix = page.get_pixmap(dpi=72)
-                        img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-                        gray = img.convert("L")
-                        inverted = ImageOps.invert(gray)
-                        bbox = inverted.getbbox() 
+                        elif mode == "Purge All Background Images":
+                            for page in doc:
+                                for img in page.get_images(full=True):
+                                    page.delete_image(img[0])
+                                    count += 1
+                                    
+                        elif mode == "Extreme: Purge ALL Text":
+                            for page in doc:
+                                for b in page.get_text("blocks"):
+                                    if b[6] == 0:
+                                        page.add_redact_annot(fitz.Rect(b[:4]))
+                                        count += 1
+                                page.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE)
+                                
+                        doc.save(output_path, deflate=True, garbage=4)
+                        doc.close()
                         
-                        if bbox:
-                            pad = 10
-                            rect = fitz.Rect(bbox[0]-pad, bbox[1]-pad, bbox[2]+pad, bbox[3]+pad)
-                            mb = page.rect
-                            rect.intersect(mb) 
-                            page.set_cropbox(rect)
-                        progress.progress((i+1)/len(doc))
-                else:
-                    for page in doc:
-                        rect = page.rect
-                        new_rect = fitz.Rect(rect.x0 + c_left, rect.y0 + c_top, rect.x1 - c_right, rect.y1 - c_bot)
-                        page.set_cropbox(new_rect)
-                        
-                doc.save(output_path, deflate=True, garbage=4)
-                doc.close()
-                st.success("Successfully cropped all pages!")
-                with open(output_path, "rb") as f:
-                    st.download_button("Download Cropped PDF", f, file_name="cropped.pdf")
-            except Exception as e:
-                st.error(f"Error: {e}")
+                        st.success(f"PURGE COMPLETE: {count} artifacts destroyed.")
+                        display_sizes(input_path, output_path)
+                        with open(output_path, "rb") as f:
+                            st.download_button("DOWNLOAD PURGED ARTIFACT", f, file_name=wm_file.name.replace(".pdf", "_cleaned.pdf"))
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
 
-elif app_mode == "📚 Merge & Split PDFs":
+# ----------------- 3. CROP ENGINE -----------------
+with tabs[2]:
+    st.header("✂️ Auto-Crop Engine")
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("Merge PDFs")
-        merge_files = st.file_uploader("Upload multiple PDFs to combine", type=["pdf"], accept_multiple_files=True)
-        if merge_files and st.button("Merge Files"):
-            with st.spinner("Merging..."):
+        crop_file = st.file_uploader("Upload Target PDF", type=["pdf"])
+        crop_mode = st.radio("Targeting Method", ["Auto-Detect Empty Space", "Manual Matrix Margin"])
+        
+        c_top, c_bot, c_left, c_right = 50, 50, 50, 50
+        if crop_mode == "Manual Matrix Margin":
+            cc1, cc2 = st.columns(2)
+            c_top = cc1.number_input("Top (pt)", value=50)
+            c_bot = cc2.number_input("Bottom (pt)", value=50)
+            c_left = cc1.number_input("Left (pt)", value=50)
+            c_right = cc2.number_input("Right (pt)", value=50)
+            
+        if crop_file and st.button("EXECUTE CROP"):
+            with col2:
+                with st.spinner("Analyzing structural boundaries..."):
+                    input_path = save_uploaded_file(crop_file)
+                    output_path = input_path.replace(".pdf", "_cropped.pdf")
+                    try:
+                        doc = fitz.open(input_path)
+                        if crop_mode == "Auto-Detect Empty Space":
+                            bar = st.progress(0)
+                            for i, page in enumerate(doc):
+                                pix = page.get_pixmap(dpi=72)
+                                img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+                                inverted = ImageOps.invert(img.convert("L"))
+                                bbox = inverted.getbbox() 
+                                if bbox:
+                                    pad = 10
+                                    rect = fitz.Rect(bbox[0]-pad, bbox[1]-pad, bbox[2]+pad, bbox[3]+pad)
+                                    rect.intersect(page.rect) 
+                                    page.set_cropbox(rect)
+                                bar.progress((i+1)/len(doc))
+                        else:
+                            for page in doc:
+                                r = page.rect
+                                page.set_cropbox(fitz.Rect(r.x0 + c_left, r.y0 + c_top, r.x1 - c_right, r.y1 - c_bot))
+                                
+                        doc.save(output_path, deflate=True, garbage=4)
+                        doc.close()
+                        st.success("CROP EXECUTED SUCCESSFULLY")
+                        with open(output_path, "rb") as f:
+                            st.download_button("DOWNLOAD CROPPED PDF", f, file_name="cropped.pdf")
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
+
+# ----------------- 4. MERGE & SPLIT -----------------
+with tabs[3]:
+    st.header("📚 Matrix Operations (Merge/Split)")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("COMBINE")
+        merge_files = st.file_uploader("Upload Segments to Merge", type=["pdf"], accept_multiple_files=True)
+        if merge_files and st.button("EXECUTE MERGE"):
+            with st.spinner("Compiling segments..."):
                 try:
                     result = fitz.open()
                     for f in merge_files:
-                        path = save_uploaded_file(f)
-                        doc = fitz.open(path)
-                        result.insert_pdf(doc)
-                        doc.close()
-                    out_path = "merged_output.pdf"
+                        result.insert_pdf(fitz.open(save_uploaded_file(f)))
+                    out_path = "merged.pdf"
                     result.save(out_path, deflate=True, garbage=4)
                     result.close()
-                    st.success("Merged successfully!")
+                    st.success("MERGE SUCCESSFUL")
                     with open(out_path, "rb") as f:
-                        st.download_button("Download Merged PDF", f, file_name="merged.pdf")
+                        st.download_button("DOWNLOAD COMPILED PDF", f, file_name="merged.pdf")
                 except Exception as e:
-                    st.error(f"Error: {e}")
+                    st.error(f"SYSTEM FAULT: {e}")
 
     with col2:
-        st.subheader("Split PDF")
-        split_file = st.file_uploader("Upload PDF to Split", type=["pdf"], key="split")
-        pages_input = st.text_input("Pages to extract (e.g. '1-3, 5, 8-10'):")
-        if split_file and pages_input and st.button("Extract Pages"):
-            with st.spinner("Splitting..."):
+        st.subheader("FRACTURE")
+        split_file = st.file_uploader("Upload Core PDF to Split", type=["pdf"], key="split")
+        pages_input = st.text_input("Target pages (e.g. 1-3, 5):")
+        if split_file and pages_input and st.button("EXECUTE FRACTURE"):
+            with st.spinner("Fracturing core document..."):
                 try:
-                    path = save_uploaded_file(split_file)
-                    doc = fitz.open(path)
+                    doc = fitz.open(save_uploaded_file(split_file))
                     result = fitz.open()
-                    
                     pages_to_keep = []
-                    parts = pages_input.split(',')
-                    for p in parts:
+                    for p in pages_input.split(','):
                         p = p.strip()
                         if '-' in p:
                             start, end = map(int, p.split('-'))
@@ -509,136 +515,141 @@ elif app_mode == "📚 Merge & Split PDFs":
                         if 0 <= p_num < len(doc):
                             result.insert_pdf(doc, from_page=p_num, to_page=p_num)
                             
-                    out_path = "split_output.pdf"
+                    out_path = "split.pdf"
                     result.save(out_path, deflate=True, garbage=4)
                     doc.close()
-                    result.close()
-                    st.success("Extracted successfully!")
+                    st.success("FRACTURE SUCCESSFUL")
                     with open(out_path, "rb") as f:
-                        st.download_button("Download Extracted Pages", f, file_name="extracted.pdf")
+                        st.download_button("DOWNLOAD FRAGMENT", f, file_name="extracted.pdf")
                 except Exception as e:
-                    st.error(f"Error: {e}")
+                    st.error(f"SYSTEM FAULT: {e}")
 
-elif app_mode == "🗜️ Ultimate PDF Compressor":
-    st.markdown("Massively reduce PDF file size by destroying unused objects, flattening streams, and downscaling images.")
-    comp_file = st.file_uploader("Upload PDF to compress", type=["pdf"])
-    
-    downscale = st.checkbox("Aggressive: Downscale all embedded images to 72 DPI (Drastic size reduction, lower image quality)", value=False)
-    
-    if comp_file and st.button("Compress Document"):
-        with st.spinner("Compressing..."):
-            input_path = save_uploaded_file(comp_file)
-            output_path = input_path.replace(".pdf", "_compressed.pdf")
-            
-            try:
-                doc = fitz.open(input_path)
-                
-                if downscale:
-                    for page in doc:
-                        for img in page.get_images(full=True):
-                            xref = img[0]
-                            base_img = doc.extract_image(xref)
-                            img_data = base_img["image"]
-                            
-                            pil_img = Image.open(io.BytesIO(img_data))
-                            if pil_img.mode in ("RGBA", "P"):
-                                pil_img = pil_img.convert("RGB")
-                                
-                            w, h = pil_img.size
-                            pil_img = pil_img.resize((int(w*0.5), int(h*0.5)), Image.Resampling.LANCZOS)
-                            
+# ----------------- 5. COMPRESS -----------------
+with tabs[4]:
+    st.header("🗜️ Data Compressor")
+    col1, col2 = st.columns(2)
+    with col1:
+        comp_file = st.file_uploader("Upload PDF to compress", type=["pdf"])
+        downscale = st.checkbox("Aggressive: Downscale all embedded images to 72 DPI")
+        if comp_file and st.button("EXECUTE COMPRESSION"):
+            with col2:
+                with st.spinner("Running high-ratio compression..."):
+                    input_path = save_uploaded_file(comp_file)
+                    output_path = input_path.replace(".pdf", "_compressed.pdf")
+                    try:
+                        doc = fitz.open(input_path)
+                        if downscale:
+                            for page in doc:
+                                for img in page.get_images(full=True):
+                                    base_img = doc.extract_image(img[0])
+                                    pil_img = Image.open(io.BytesIO(base_img["image"]))
+                                    if pil_img.mode in ("RGBA", "P"): pil_img = pil_img.convert("RGB")
+                                    w, h = pil_img.size
+                                    pil_img = pil_img.resize((int(w*0.5), int(h*0.5)), Image.Resampling.LANCZOS)
+                                    b = io.BytesIO()
+                                    pil_img.save(b, format="JPEG", quality=60, optimize=True)
+                                    page.insert_image(page.rect, stream=b.getvalue(), replace=True)
+                                    
+                        doc.save(output_path, garbage=4, deflate=True, clean=True)
+                        doc.close()
+                        st.success("COMPRESSION COMPLETE")
+                        display_sizes(input_path, output_path)
+                        with open(output_path, "rb") as f:
+                            st.download_button("DOWNLOAD COMPRESSED", f, file_name="compressed.pdf")
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
+
+# ----------------- 6. DARK MODE INVERTER -----------------
+with tabs[5]:
+    st.header("🎨 Dark Mode Inverter")
+    col1, col2 = st.columns(2)
+    with col1:
+        inv_file = st.file_uploader("Upload PDF", type=["pdf"], key="inv")
+        dpi_setting = st.slider("Render Quality (DPI)", 72, 300, 150)
+        if inv_file and st.button("INVERT SPECTRUM"):
+            with col2:
+                with st.spinner("Inverting visual spectrum..."):
+                    input_path = save_uploaded_file(inv_file)
+                    out_path = input_path.replace(".pdf", "_dark.pdf")
+                    try:
+                        doc = fitz.open(input_path)
+                        out_pdf = fitz.open()
+                        bar = st.progress(0)
+                        for i, page in enumerate(doc):
+                            pix = page.get_pixmap(dpi=dpi_setting)
+                            img = ImageOps.invert(Image.frombytes("RGB", [pix.width, pix.height], pix.samples))
                             b = io.BytesIO()
-                            pil_img.save(b, format="JPEG", quality=60, optimize=True)
-                            page.insert_image(page.rect, stream=b.getvalue(), replace=True)
-                            
-                doc.save(output_path, garbage=4, deflate=True, clean=True)
-                doc.close()
-                st.success("Compression Complete!")
-                display_sizes(input_path, output_path)
-                with open(output_path, "rb") as f:
-                    st.download_button("Download Compressed PDF", f, file_name="compressed.pdf")
-            except Exception as e:
-                st.error(f"Error: {e}")
+                            img.save(b, format="JPEG", quality=80)
+                            out_pdf.insert_pdf(fitz.open("pdf", fitz.open("jpeg", b.getvalue()).convert_to_pdf()))
+                            bar.progress((i+1)/len(doc))
+                        out_pdf.save(out_path, deflate=True, garbage=4)
+                        st.success("SPECTRUM INVERTED")
+                        with open(out_path, "rb") as f:
+                            st.download_button("DOWNLOAD DARK DOC", f, file_name="dark_mode.pdf")
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
 
-elif app_mode == "🎨 Dark Mode Color Inverter":
-    st.markdown("Converts all pages to inverted dark-mode images.")
-    inv_file = st.file_uploader("Upload PDF", type=["pdf"])
-    dpi_setting = st.slider("Render Quality (DPI)", 72, 300, 150)
-    if inv_file and st.button("Invert PDF"):
-        with st.spinner("Inverting..."):
-            input_path = save_uploaded_file(inv_file)
-            out_path = input_path.replace(".pdf", "_dark.pdf")
-            try:
-                doc = fitz.open(input_path)
-                out_pdf = fitz.open()
-                bar = st.progress(0)
-                for i, page in enumerate(doc):
-                    pix = page.get_pixmap(dpi=dpi_setting)
-                    img = ImageOps.invert(Image.frombytes("RGB", [pix.width, pix.height], pix.samples))
-                    b = io.BytesIO()
-                    img.save(b, format="JPEG", quality=80)
-                    out_pdf.insert_pdf(fitz.open("pdf", fitz.open("jpeg", b.getvalue()).convert_to_pdf()))
-                    bar.progress((i+1)/len(doc))
-                out_pdf.save(out_path, deflate=True, garbage=4)
-                st.success("Dark Mode ready!")
-                display_sizes(input_path, out_path)
-                with open(out_path, "rb") as f:
-                    st.download_button("Download", f, file_name="dark_mode.pdf")
-            except Exception as e:
-                st.error(f"Error: {e}")
+# ----------------- 7. AI REMBG -----------------
+with tabs[6]:
+    st.header("🖼️ Neural Background Eraser")
+    col1, col2 = st.columns(2)
+    with col1:
+        bg_file = st.file_uploader("Upload PDF", type=["pdf"], key="bg")
+        if bg_file and st.button("INITIALIZE NEURAL NET"):
+            with col2:
+                with st.spinner("Running U2Net Deep Learning model..."):
+                    input_path = save_uploaded_file(bg_file)
+                    out_path = input_path.replace(".pdf", "_nobg.pdf")
+                    try:
+                        doc = fitz.open(input_path)
+                        out_pdf = fitz.open()
+                        bar = st.progress(0)
+                        for i, page in enumerate(doc):
+                            pix = page.get_pixmap(dpi=150)
+                            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+                            no_bg = remove(img)
+                            bg = Image.new("RGB", no_bg.size, (10, 10, 10)) # dark background instead of white
+                            bg.paste(no_bg, mask=no_bg.split()[3] if len(no_bg.split())==4 else None)
+                            b = io.BytesIO()
+                            bg.save(b, format="JPEG", quality=80)
+                            out_pdf.insert_pdf(fitz.open("pdf", fitz.open("jpeg", b.getvalue()).convert_to_pdf()))
+                            bar.progress((i+1)/len(doc))
+                        out_pdf.save(out_path, deflate=True, garbage=4)
+                        st.success("BACKGROUND ERADICATED")
+                        with open(out_path, "rb") as f:
+                            st.download_button("DOWNLOAD ARTIFACT", f, file_name="no_background.pdf")
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
 
-elif app_mode == "🖼️ AI Background Remover":
-    st.markdown("Isolates foreground elements using U2Net Deep Learning.")
-    bg_file = st.file_uploader("Upload PDF", type=["pdf"])
-    if bg_file and st.button("Run AI Separation"):
-        with st.spinner("Running AI Model..."):
-            input_path = save_uploaded_file(bg_file)
-            out_path = input_path.replace(".pdf", "_nobg.pdf")
-            try:
-                doc = fitz.open(input_path)
-                out_pdf = fitz.open()
-                bar = st.progress(0)
-                for i, page in enumerate(doc):
-                    pix = page.get_pixmap(dpi=150)
-                    img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-                    no_bg = remove(img)
-                    bg = Image.new("RGB", no_bg.size, (255, 255, 255))
-                    bg.paste(no_bg, mask=no_bg.split()[3] if len(no_bg.split())==4 else None)
-                    b = io.BytesIO()
-                    bg.save(b, format="JPEG", quality=80)
-                    out_pdf.insert_pdf(fitz.open("pdf", fitz.open("jpeg", b.getvalue()).convert_to_pdf()))
-                    bar.progress((i+1)/len(doc))
-                out_pdf.save(out_path, deflate=True, garbage=4)
-                st.success("Backgrounds eradicated!")
-                with open(out_path, "rb") as f:
-                    st.download_button("Download", f, file_name="no_background.pdf")
-            except Exception as e:
-                st.error(f"Error: {e}")
+# ----------------- 8. SECURITY -----------------
+with tabs[7]:
+    st.header("🔐 Defense / Offense")
+    col1, col2 = st.columns(2)
+    with col1:
+        sec_file = st.file_uploader("Upload Target Document", type=["pdf"])
+        action = st.radio("Action Protocol", ["Encrypt (Defense)", "Decrypt (Offense)"])
+        pwd = st.text_input("Enter Passphrase:", type="password")
+        if sec_file and pwd and st.button("EXECUTE PROTOCOL"):
+            with col2:
+                with st.spinner("Processing cryptography..."):
+                    input_path = save_uploaded_file(sec_file)
+                    out_path = "secured.pdf"
+                    try:
+                        doc = fitz.open(input_path)
+                        if action == "Decrypt (Offense)":
+                            if doc.authenticate(pwd):
+                                doc.save(out_path)
+                                st.success("FIREWALL BREACHED. UNLOCKED.")
+                            else:
+                                st.error("ACCESS DENIED. Incorrect Passphrase.")
+                                st.stop()
+                        else:
+                            doc.save(out_path, encryption=fitz.PDF_ENCRYPT_AES_256, user_pw=pwd, owner_pw=pwd)
+                            st.success("ENCRYPTION ENABLED.")
+                        doc.close()
+                        with open(out_path, "rb") as f:
+                            st.download_button("DOWNLOAD FILE", f, file_name="secured_doc.pdf")
+                    except Exception as e:
+                        st.error(f"SYSTEM FAULT: {e}")
 
-elif app_mode == "🔐 Security (Protect/Unlock)":
-    st.markdown("Encrypt your PDF with a password, or remove password protection.")
-    sec_file = st.file_uploader("Upload PDF", type=["pdf"])
-    action = st.radio("Action", ["Add Password", "Remove Password"])
-    pwd = st.text_input("Password:", type="password")
-    
-    if sec_file and pwd and st.button("Execute"):
-        with st.spinner("Processing security protocol..."):
-            input_path = save_uploaded_file(sec_file)
-            out_path = "secured.pdf"
-            try:
-                doc = fitz.open(input_path)
-                if action == "Remove Password":
-                    if doc.authenticate(pwd):
-                        doc.save(out_path)
-                        st.success("Unlocked successfully!")
-                    else:
-                        st.error("Incorrect Password!")
-                        st.stop()
-                else:
-                    doc.save(out_path, encryption=fitz.PDF_ENCRYPT_AES_256, user_pw=pwd, owner_pw=pwd)
-                    st.success("Encrypted successfully!")
-                doc.close()
-                with open(out_path, "rb") as f:
-                    st.download_button("Download File", f, file_name="secured_doc.pdf")
-            except Exception as e:
-                st.error(f"Error: {e}")
+st.markdown("<div class='custom-footer'>Made with <span>❤️</span> by <b>SONU VERMA</b></div>", unsafe_allow_html=True)
