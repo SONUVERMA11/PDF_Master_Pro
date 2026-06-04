@@ -1,0 +1,10 @@
+streamlit
+PyMuPDF
+Pillow
+pdf2docx
+rembg
+onnxruntime
+python-pptx
+pandas
+openpyxl
+pdfplumber
