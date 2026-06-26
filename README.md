@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="PDF_Master_Pro Banner" width="100%">
+</p>
+
 # 💠 PDF Studio Pro // TERMINAL
 https://pdfmasterpro-yhoukcsce8e6fmappajahau.streamlit.app/#pdf-studio-pro-terminal
 <div align="center">
