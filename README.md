@@ -55,3 +55,8 @@ http://localhost:8501
 ## 👨‍💻 Author
 
 Made with ❤️ by **SONU VERMA**
+
+
+---
+Made with ❤️ by [Sonu Verma](https://github.com/SONUVERMA11)
+
